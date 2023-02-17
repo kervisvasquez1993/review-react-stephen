@@ -1,0 +1,8 @@
+{
+  "name": "api-with-react",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/kervisvasquez1993/review-react-stephen.git",
+  "author": "redvital <kervisvasquez24@gmail.com>",
+  "license": "MIT"
+}
