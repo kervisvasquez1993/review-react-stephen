@@ -2,7 +2,6 @@ import React from "react";
 import { ImageShow } from "./ImageShow";
 
 export const Imagelist = ({ valueInput, data, loading }) => {
-    console.log(data, "me ejecute");
     return (
         <>
             Buscar producto : "{valueInput}"
@@ -10,9 +9,7 @@ export const Imagelist = ({ valueInput, data, loading }) => {
                 {loading ? (
                     <h1>Loading...</h1>
                 ) : (
-                    data?.map((e) => (
-                        <li>{<ImageShow key={e.id} data={e} />}</li>
-                    ))
+                    data?.map((e) => <ImageShow key={e.id} data={e} />)
                 )}
             </ul>
         </>

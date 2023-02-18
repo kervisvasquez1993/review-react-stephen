@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const Search = ({ onInputChange }) => {
+export const Search = ({ onInputChange, handleSubmit }) => {
     const [queryValue, setQueryValue] = useState("");
     const input = (e) => {
         setQueryValue(e.target.value);
@@ -8,6 +8,7 @@ export const Search = ({ onInputChange }) => {
     const onSubmitValue = (e) => {
         e.preventDefault();
         onInputChange(queryValue);
+        handleSubmit(queryValue)
         setQueryValue("");
     };
     return (
