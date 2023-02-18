@@ -2,11 +2,16 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectarDB from "./config/db.js";
+import userRouters from "./routes/userRouters.js";
 
 const app = express();
-dotenv.config()
+app.use(express.json());
+dotenv.config();
 connectarDB();
-const PORT = process.env.PORT 
+// routing
+app.use("/api/users", userRouters);
+
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
     console.log("test");
