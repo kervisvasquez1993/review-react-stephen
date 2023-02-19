@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import { generateId } from "../helpers/generateId.js";
 export const userRegisterController = async (req, res) => {
     // evitar email duplicado
     const { email } = req.body;
@@ -9,6 +10,7 @@ export const userRegisterController = async (req, res) => {
     }
     try {
         const user = new User(req.body);
+        user.token = generateId();
         const userSave = await user.save();
         res.json(userSave);
     } catch (error) {
