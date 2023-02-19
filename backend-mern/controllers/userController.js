@@ -46,3 +46,23 @@ export const autenticarController = async (req, res) => {
         token: generateJWT(user._id),
     });
 };
+
+export const conformarController = async (req, res) => {
+    const token = req.params.token;
+    // console.log(token);
+    const userConfirmar = await User.findOne({ token });
+    console.log(userConfirmar);
+    if (!userConfirmar) {
+        const error = new Error("Token no valido");
+        return res.status(400).json({ error: error.message });
+    }
+    res.json({ msj: "ok!" });
+    try {
+        userConfirmar.confirmado = true;
+        userConfirmar.token = "";
+        userConfirmar.save();
+        res.json({ msj: "User confirmado de forma correcta" });
+    } catch (error) {
+        res.status(400).json({ error });
+    }
+};
