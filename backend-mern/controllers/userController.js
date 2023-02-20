@@ -112,3 +112,7 @@ export const newPasswordController = async (req, res) => {
         res.status(400).json({ error });
     }
 };
+
+export const profileUserController = async (req, res) => {
+    res.json({msj: "desde perfil"})
+};
