@@ -14,14 +14,14 @@ const projectSchema = mongoose.Schema(
         },
         fechaEntrega: {
             type: Date,
-            default: Data.now(),
+            default: Date.now(),
         },
         cliente: {
             tye: String,
             trim: true,
             required: true,
         },
-        creader: {
+        creador: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
         },
@@ -38,3 +38,4 @@ const projectSchema = mongoose.Schema(
 );
 
 const Project = mongoose.model('Project', projectSchema);
+export default Project;
