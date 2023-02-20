@@ -66,3 +66,49 @@ export const conformarController = async (req, res) => {
         res.status(400).json({ error });
     }
 };
+
+export const resertPasswordController = async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+        const error = new Error(`El usuario con el email ${email} no existe`);
+        return res.status(400).json({ msj: error.message });
+    }
+    try {
+        user.token = generateId();
+        await user.save();
+        res.json({ msj: "Se envio un correo a su email" });
+    } catch (error) {
+        console.log(error);
+        res.json({ error });
+    }
+};
+
+export const comprobarTokenController = async (req, res) => {
+    const token = req.params.token;
+    const validatetoken = await User.findOne({ token });
+    if (!validatetoken) {
+        const error = new Error(`Token no valido`);
+        return res.status(404).json({ msj: error });
+    }
+
+    res.json({ msj: "Token valido y el usuario existe" });
+};
+
+export const newPasswordController = async (req, res) => {
+    const { token } = req.params;
+    const { passwords } = req.body;
+    const usuario = await User.findOne({ token });
+    if (!usuario) {
+        const error = new Error(`Token no valido`);
+        return res.status(404).json({ msj: error });
+    }
+    try {
+        usuario.passwords = passwords;
+        usuario.token = "";
+        await usuario.save();
+        res.json({ msj: "Password cambiada de forma satisfactoria" });
+    } catch (error) {
+        res.status(400).json({ error });
+    }
+};
