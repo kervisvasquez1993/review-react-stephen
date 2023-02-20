@@ -11,12 +11,19 @@ export const checkAuth = async (req, res, next) => {
             token = req.headers.authorization.split(" ")[1];
             // console.log(token);
             const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-            req.usuario = await User.findById(decoded.id);
+            req.usuario = await User.findById(decoded.id).select(
+                "-passwords -token -confirmado -__v"
+            );
             console.log(req.usuario);
+            return next();
         } catch (error) {
             console.log(error);
             return res.status(404).json({ error: error });
         }
+    }
+    if (!token) {
+        const error = new Error("TOKEN NO VALIDO!");
+        return res.json({ error: error.message });
     }
     next();
 };
