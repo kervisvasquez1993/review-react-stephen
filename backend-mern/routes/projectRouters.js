@@ -18,7 +18,7 @@ router
     .get(checkAuth, getProjectsController)
     .post(checkAuth, newProjectsController);
 router
-    .route(":id")
+    .route("/:id")
     .get(checkAuth, getProjectController)
     .put(checkAuth, editProjectsController)
     .delete(checkAuth, deletedProjectsController);
