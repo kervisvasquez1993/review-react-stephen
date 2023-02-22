@@ -23,7 +23,7 @@ router
     .put(checkAuth, editProjectsController)
     .delete(checkAuth, deletedProjectsController);
 
-router.get("/tasks/:id", checkAuth, getTaskProjectsController);
+router.get("/:id/tasks", checkAuth, getTaskProjectsController);
 
 router.post("/add-colaborador/:id", checkAuth, addUserProjectsController);
 router.post(

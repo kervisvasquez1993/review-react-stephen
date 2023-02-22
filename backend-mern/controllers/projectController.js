@@ -1,4 +1,5 @@
 import Project from "../models/Project.js";
+import Task from "../models/Task.js";
 export const getProjectsController = async (req, res) => {
     try {
         const projects = await Project.find().where("creador").equals(req.user);
@@ -89,6 +90,14 @@ export const addUserProjectsController = (req, res) => {
 export const deletedUserProjectsController = (req, res) => {
     console.log("gola");
 };
-export const getTaskProjectsController = (req, res) => {
-    console.log("gola");
+export const getTaskProjectsController = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const project = await Project.findById(id);
+        // solo el que crea el projecto o colaborador
+        const tasks = await Task.find().where("proyecto").equals(id);
+        return res.status(200).json({ msj: { tasks, project } });
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
 };
