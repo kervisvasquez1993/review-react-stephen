@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectarDB from "./config/db.js";
 import userRouters from "./routes/userRouters.js";
 import projectRouters from "./routes/projectRouters.js";
+import taskRouters from "./routes/taskRouters.js";
 
 const app = express();
 app.use(express.json());
@@ -12,6 +13,7 @@ connectarDB();
 // routing
 app.use("/api/users", userRouters);
 app.use("/api/projects", projectRouters);
+app.use("/api/task", taskRouters);
 
 const PORT = process.env.PORT;
 
