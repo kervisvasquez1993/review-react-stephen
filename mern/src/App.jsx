@@ -13,7 +13,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<AuthLayout />}>
                     <Route index element={<LoginPage />} />
-                    <Route path="register" element={<RegisterPage />} />
+                    <Route path="registrar" element={<RegisterPage />} />
                     <Route
                         path="olvidar-passowrd"
                         element={<OlvidarPassword />}
