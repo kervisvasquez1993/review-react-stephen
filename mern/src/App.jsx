@@ -15,15 +15,15 @@ const App = () => {
                     <Route index element={<LoginPage />} />
                     <Route path="registrar" element={<RegisterPage />} />
                     <Route
-                        path="olvidar-passowrd"
+                        path="olvidar-password"
                         element={<OlvidarPassword />}
                     />
                     <Route
-                        path="olvidar-passowrd/:token"
-                        element={<OlvidarPassword />}
+                        path="olvidar-password/:token"
+                        element={<NuevaPassword />}
                     />
-                    <Route path="new-password" element={<NuevaPassword />} />
-                    <Route path="conformar/:id" element={<ConfirmarCuenta />} />
+                    {/* <Route path="new-password" element={<NuevaPassword />} /> */}
+                    <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
                 </Route>
             </Routes>
         </BrowserRouter>

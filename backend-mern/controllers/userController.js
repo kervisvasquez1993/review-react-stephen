@@ -47,7 +47,7 @@ export const autenticarController = async (req, res) => {
     });
 };
 
-export const conformarController = async (req, res) => {
+export const confirmarController = async (req, res) => {
     const token = req.params.token;
     // console.log(token);
     const userConfirmar = await User.findOne({ token });

@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 export const NuevaPassword = () => {
     return (
         <>
@@ -11,28 +11,14 @@ export const NuevaPassword = () => {
                 <div className="my-5">
                     <label
                         className="uppercase text-gray-600 block text-xl font-bold"
-                        htmlFor="email"
-                    >
-                        Email :{" "}
-                    </label>
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder="Email de registro aqui"
-                        className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
-                    />
-                </div>
-                <div className="my-5">
-                    <label
-                        className="uppercase text-gray-600 block text-xl font-bold"
                         htmlFor="password"
                     >
                         Password :{" "}
                     </label>
                     <input
                         id="password"
-                        type="password"
-                        placeholder="Password"
+                        type="new password"
+                        placeholder="Nuevo Password"
                         className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
                     />
                 </div>
@@ -51,7 +37,7 @@ export const NuevaPassword = () => {
                 </Link>
                 <Link
                     className=" block text-center my-5 text-slate-500 uppercase text-sm  "
-                    to={"olvidar-passowrd"}
+                    to={"olvidar-password"}
                 >
                     olvide mi Password
                 </Link>

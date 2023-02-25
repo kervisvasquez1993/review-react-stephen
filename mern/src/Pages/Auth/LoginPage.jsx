@@ -50,7 +50,7 @@ export const LoginPage = () => {
                 </Link>
                 <Link
                     className=" block text-center my-5 text-slate-500 uppercase text-sm  "
-                    to={"olvidar-passowrd"}
+                    to={"olvidar-password"}
                 >
                     olvide mi Password
                 </Link>
