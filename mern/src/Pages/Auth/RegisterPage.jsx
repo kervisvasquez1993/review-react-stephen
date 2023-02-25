@@ -7,18 +7,18 @@ export const RegisterPage = () => {
     const [form, setForm] = useState({
         email: "",
         nombre: "",
-        password: "",
-        repeatPassword: "",
+        passwords: "",
+        repeatPasswords: "",
     });
     const [alerta, setAlerta] = useState({
         message: "",
         error: false,
     });
     const { message, error } = alerta;
-    const { email, password, repeatPassword, nombre } = form;
+    const { email, passwords, repeatPasswords, nombre } = form;
     const sendForm = async (e) => {
         e.preventDefault();
-        if ([nombre, email, password, repeatPassword].includes("")) {
+        if ([nombre, email, passwords, repeatPasswords].includes("")) {
             setAlerta({
                 message: "Todos los campos son obligatorios",
                 error: true,
@@ -26,15 +26,15 @@ export const RegisterPage = () => {
             return;
         }
 
-        if (password !== repeatPassword) {
+        if (passwords !== repeatPasswords) {
             setAlerta({
-                message: "Los Password no son iguales",
+                message: "Los Passwords no son iguales",
                 error: true,
             });
             return;
         }
 
-        if (password.length <= 6) {
+        if (passwords.length <= 6) {
             setAlerta({
                 message: "Minimo son 6 caracteres",
                 error: true,
@@ -42,23 +42,26 @@ export const RegisterPage = () => {
             return;
         }
 
-        setAlerta({
-            error: false,
-            message: "Mensaje enviado Exitosamente",
-        });
-
-        setForm({ email: "", password: "", repeatPassword: "", nombre: "" });
-        console.log(error);
-        // setTimeout(() => {
-        //     setAlerta({ message: "", error: false });
-        // }, 3000);
-        console.log(ApiBackend);
+        setForm({ email: "", passwords: "", repeatPasswords: "", nombre: "" });
         try {
-            const respuesta = await ApiBackend.post("users", form);
+            const respuesta = await ApiBackend.post("/users", form);
             console.log(respuesta);
+            const { data } = respuesta;
+
+            setAlerta({
+                error: false,
+                message: data.msj,
+            });
         } catch (error) {
-            console.log(error);
+            const { response } = error;
+            setAlerta({
+                error: true,
+                message: response.data.msj,
+            });
         }
+        setTimeout(() => {
+            setAlerta({ message: "", error: false });
+        }, 3000);
     };
     return (
         <>
@@ -111,17 +114,17 @@ export const RegisterPage = () => {
                 <div className="my-5">
                     <label
                         className="uppercase text-gray-600 block text-xl font-bold"
-                        htmlFor="password"
+                        htmlFor="passwords"
                     >
-                        Password :{" "}
+                        Passwords :{" "}
                     </label>
                     <input
-                        id="password"
+                        id="passwords"
                         type="password"
-                        placeholder="Password"
-                        value={password}
+                        placeholder="Passwords"
+                        value={passwords}
                         onChange={(e) =>
-                            setForm({ ...form, password: e.target.value })
+                            setForm({ ...form, passwords: e.target.value })
                         }
                         className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
                     />
@@ -129,17 +132,20 @@ export const RegisterPage = () => {
                 <div className="my-5">
                     <label
                         className="uppercase text-gray-600 block text-xl font-bold"
-                        htmlFor="password2"
+                        htmlFor="passwords2"
                     >
-                        Confirm Password :{" "}
+                        Confirm Passwords :{" "}
                     </label>
                     <input
-                        id="password2"
+                        id="passwords2"
                         type="password"
-                        placeholder="Conform Password"
-                        value={repeatPassword}
+                        placeholder="Conform Passwords"
+                        value={repeatPasswords}
                         onChange={(e) =>
-                            setForm({ ...form, repeatPassword: e.target.value })
+                            setForm({
+                                ...form,
+                                repeatPasswords: e.target.value,
+                            })
                         }
                         className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
                     />
@@ -159,9 +165,9 @@ export const RegisterPage = () => {
                 </Link>
                 <Link
                     className=" block text-center my-5 text-slate-500 uppercase text-sm  "
-                    to={"/olvidar-password"}
+                    to={"/olvidar-passwords"}
                 >
-                    olvide mi Password
+                    olvide mi Passwords
                 </Link>
             </nav>
         </>

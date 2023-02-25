@@ -6,14 +6,14 @@ export const userRegisterController = async (req, res) => {
     const { email } = req.body;
     const validateEmail = await User.findOne({ email });
     if (validateEmail) {
-        const error = new Error(`El usuario con el email ${email}`);
+        const error = new Error(`El usuario con el email ${email} ya esta registrado`);
         return res.status(400).json({ msj: error.message });
     }
     try {
         const user = new User(req.body);
         user.token = generateId();
         const userSave = await user.save();
-        res.json(userSave);
+        res.status(200).json({ msj: "Usuario Creado Correctamente" });
     } catch (error) {
         res.json({ error: error.errors });
     }
