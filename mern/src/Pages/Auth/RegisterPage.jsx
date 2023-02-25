@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { ApiBackend } from "../../apis/ApiBackend";
 import { Alert } from "../../Views/Alert";
 
 export const RegisterPage = () => {
@@ -15,7 +16,7 @@ export const RegisterPage = () => {
     });
     const { message, error } = alerta;
     const { email, password, repeatPassword, nombre } = form;
-    const sendForm = (e) => {
+    const sendForm = async (e) => {
         e.preventDefault();
         if ([nombre, email, password, repeatPassword].includes("")) {
             setAlerta({
@@ -48,9 +49,16 @@ export const RegisterPage = () => {
 
         setForm({ email: "", password: "", repeatPassword: "", nombre: "" });
         console.log(error);
-        setTimeout(() => {
-            setAlerta({ message: "", error: false });
-        }, 3000);
+        // setTimeout(() => {
+        //     setAlerta({ message: "", error: false });
+        // }, 3000);
+        console.log(ApiBackend);
+        try {
+            const respuesta = await ApiBackend.post("users", form);
+            console.log(respuesta);
+        } catch (error) {
+            console.log(error);
+        }
     };
     return (
         <>
