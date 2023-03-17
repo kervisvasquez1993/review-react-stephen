@@ -1,4 +1,4 @@
-import { generateJWT, generateId } from "../helpers/index.js";
+import { generateJWT, generateId, emailRegister } from "../helpers/index.js";
 import User from "../models/User.js";
 
 export const userRegisterController = async (req, res) => {
@@ -12,7 +12,14 @@ export const userRegisterController = async (req, res) => {
     try {
         const user = new User(req.body);
         user.token = generateId();
+        
         const userSave = await user.save();
+        // enviar el email de confirmacion
+        emailRegister({
+            email : userSave.email,
+            nombre : userSave.nombre,
+            token : userSave.token
+        })
         res.status(200).json({ msj: "Usuario Creado Correctamente" });
     } catch (error) {
         res.json({ error: error.errors });
