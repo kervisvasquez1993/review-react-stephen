@@ -65,13 +65,13 @@ export const confirmarController = async (req, res) => {
         const error = new Error("Token no valido");
         return res.status(400).json({ error: error.message });
     }
-    res.json({ msj: "ok!" });
     try {
         userConfirmar.confirmado = true;
         userConfirmar.token = "";
         userConfirmar.save();
-        res.json({ msj: "User confirmado de forma correcta" });
+        res.json({ msj: `User confirmado de forma correcta` });
     } catch (error) {
+        console.log("error update ")
         res.status(400).json({ error });
     }
 };
