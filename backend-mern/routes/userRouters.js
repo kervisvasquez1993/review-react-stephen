@@ -13,7 +13,7 @@ const router = express.Router();
 // Autenticacion, regitro y conformacion de usuario
 router.post("/", userRegisterController);
 router.post("/login", autenticarController);
-router.post("/confirmar/:token", confirmarController);
+router.get("/confirmar/:token", confirmarController);
 router.post("/resert-password", resertPasswordController);
 router.get("/perfil", checkAuth, profileUserController);
 // router.get("/olvidar-password/:token", comprobarTokenController);

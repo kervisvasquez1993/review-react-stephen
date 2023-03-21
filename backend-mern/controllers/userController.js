@@ -6,20 +6,22 @@ export const userRegisterController = async (req, res) => {
     const { email } = req.body;
     const validateEmail = await User.findOne({ email });
     if (validateEmail) {
-        const error = new Error(`El usuario con el email ${email} ya esta registrado`);
+        const error = new Error(
+            `El usuario con el email ${email} ya esta registrado`
+        );
         return res.status(400).json({ msj: error.message });
     }
     try {
         const user = new User(req.body);
         user.token = generateId();
-        
+
         const userSave = await user.save();
         // enviar el email de confirmacion
         emailRegister({
-            email : userSave.email,
-            nombre : userSave.nombre,
-            token : userSave.token
-        })
+            email: userSave.email,
+            nombre: userSave.nombre,
+            token: userSave.token,
+        });
         res.status(200).json({ msj: "Usuario Creado Correctamente" });
     } catch (error) {
         res.json({ error: error.errors });
@@ -56,7 +58,7 @@ export const autenticarController = async (req, res) => {
 
 export const confirmarController = async (req, res) => {
     const token = req.params.token;
-    // console.log(token);
+    console.log("hola desde controller")
     const userConfirmar = await User.findOne({ token });
     console.log(userConfirmar);
     if (!userConfirmar) {

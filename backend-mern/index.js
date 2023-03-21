@@ -10,9 +10,10 @@ import cors from "cors";
 const app = express();
 app.use(express.json());
 dotenv.config();
+
 connectarDB();
 // config cors
-const whiteLists = ["http://localhost:3000", "http://localhost:5173"];
+const whiteLists = ["http://localhost:3000", "http://localhost:5173", "http://localhost:4000", "127.0.0.1:4000"];
 const corsOptions = {
     origin: function (origin, callback) {
         if (whiteLists.includes(origin)) {
@@ -32,5 +33,8 @@ const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
     console.log("test");
-    console.log("listening on port 4000");
+    console.log("listening on port 3000");
+    console.log(PORT)
+    
+    
 });
