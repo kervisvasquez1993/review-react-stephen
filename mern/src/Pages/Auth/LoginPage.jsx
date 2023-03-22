@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ApiBackend } from "../../apis/ApiBackend";
 import { Alert } from "../../Views/Alert";
+import useAuth from "../../hooks/useAuth";
 
 export const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [alerta, setAlerta] = useState("");
+    const {setAuth} = useAuth()
 
     const handleSutmit = async (e) => {
         e.preventDefault();
@@ -19,7 +21,10 @@ export const LoginPage = () => {
         }
         try {
             const {data} = await ApiBackend.post("users/login", {email, passwords : password})
+            localStorage.setItem("token", data.token);
+            setAuth(data)
             console.log(data);
+            setAlerta({})
 
         } catch (error) {
             console.log(error.response.data.error)

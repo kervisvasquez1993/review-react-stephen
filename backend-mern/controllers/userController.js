@@ -135,6 +135,6 @@ export const newPasswordController = async (req, res) => {
 };
 
 export const profileUserController = async (req, res) => {
-    const perfil = req.usuario;
+    const perfil = req.user;
     res.json({ msj: perfil });
 };
