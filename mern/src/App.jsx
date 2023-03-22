@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider";
 import { AuthLayout, RutaProtegida } from "./Layouts/";
-import Proyectos from "./Pages/dashboard/Proyectos";
+import { NuevoProyecto, Proyectos } from "./Pages/dashboard/";
+
 import {
     ConfirmarCuenta,
     LoginPage,
@@ -33,6 +34,7 @@ const App = () => {
                     </Route>
                     <Route path="/proyectos" element={<RutaProtegida />}>
                         <Route index element={<Proyectos />} />
+                        <Route path="crear-proyecto" element={<NuevoProyecto />} />
                     </Route>
                 </Routes>
             </AuthProvider>

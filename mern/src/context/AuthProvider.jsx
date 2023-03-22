@@ -1,10 +1,12 @@
 import { useState, useEffect, createContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { ApiBackend } from "../apis/ApiBackend";
 
 const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState({});
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate()
     useEffect(() => {
         (async () => {
             const token = localStorage.getItem("token");
@@ -20,8 +22,9 @@ export const AuthProvider = ({ children }) => {
                 const { data } = await ApiBackend("users/perfil", config);
                 // console.log(da ta);
                 setAuth(data.msj);
+                navigate("/proyectos")
             } catch (error) {
-                setAuth({})
+                setAuth({});
                 console.log(error);
             }
             setLoading(false);
