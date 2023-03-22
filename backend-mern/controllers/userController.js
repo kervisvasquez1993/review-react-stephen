@@ -49,7 +49,7 @@ export const autenticarController = async (req, res) => {
         return res.status(403).json({ error: error.message });
     }
     // comprobar password
-    if (await !user.comprobarPassword(passwords)) {
+    if ( !(await user.comprobarPassword(passwords))) {
         const error = new Error("Tu Conraseña es incorrecta");
         return res.status(403).json({ error: error.message });
     }

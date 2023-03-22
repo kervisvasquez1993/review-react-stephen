@@ -7,7 +7,7 @@ export const Alert = ({ type }) => {
                 type.error
                     ? "from-red-400 to-red-600"
                     : "from-sky-400 to-sky-600"
-            } bg-gradient-to-br text-center p-3 rounded-xl uppercase text-bold text-sm text-while my-10 "`}
+            } bg-gradient-to-br text-center text-white p-3 rounded-xl uppercase text-bold text-sm  my-10 "`}
         >
             {type.message}
         </div>
