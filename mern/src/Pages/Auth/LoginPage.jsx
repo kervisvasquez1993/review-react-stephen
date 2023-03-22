@@ -8,7 +8,7 @@ export const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [alerta, setAlerta] = useState("");
-    const {setAuth} = useAuth()
+    const { setAuth, loading, auth } = useAuth();
 
     const handleSutmit = async (e) => {
         e.preventDefault();
@@ -20,27 +20,31 @@ export const LoginPage = () => {
             return;
         }
         try {
-            const {data} = await ApiBackend.post("users/login", {email, passwords : password})
+            const { data } = await ApiBackend.post("users/login", {
+                email,
+                passwords: password,
+            });
             localStorage.setItem("token", data.token);
-            setAuth(data)
+            setAuth(data);
             console.log(data);
-            setAlerta({})
-
+            setAlerta({});
         } catch (error) {
-            console.log(error.response.data.error)
-            setAlerta({message : error.response.data.error, error : true})
+            console.log(error.response.data.error);
+            setAlerta({ message: error.response.data.error, error: true });
         }
     };
     const { message } = alerta;
+    console.log(auth, "auth");
+    console.log(loading, "loading");
     return (
         <>
             <h1 className="text-sky-600 font-black text-3xl capitalize">
                 Inicia Sesion y administra
                 <span className="text-slate-700"> tus proyectos</span>
             </h1>
-            {message && <Alert type={alerta}/>}
+            {message && <Alert type={alerta} />}
             <form
-                onSubmit={e => handleSutmit(e)}
+                onSubmit={(e) => handleSutmit(e)}
                 className="my-10 bg-white rounded-lg px-10 py-5"
             >
                 <div className="my-5">

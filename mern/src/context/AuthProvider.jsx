@@ -4,11 +4,11 @@ import { ApiBackend } from "../apis/ApiBackend";
 const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState({});
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         (async () => {
             const token = localStorage.getItem("token");
-            if (!token) return;
-            console.log(token, "auth");
+            if (!token) return setLoading(false);
             const config = {
                 headers: {
                     "Content-Type": "application/json",
@@ -17,16 +17,18 @@ export const AuthProvider = ({ children }) => {
             };
             // console.log(config, "confog")
             try {
-                const  {data} = await ApiBackend("users/perfil", config);
+                const { data } = await ApiBackend("users/perfil", config);
                 // console.log(da ta);
-                setAuth(data);
+                setAuth(data.msj);
             } catch (error) {
-                console.log(error)
+                setAuth({})
+                console.log(error);
             }
+            setLoading(false);
         })();
     }, []);
     return (
-        <AuthContext.Provider value={{ setAuth }}>
+        <AuthContext.Provider value={{ auth, setAuth, loading }}>
             {children}
         </AuthContext.Provider>
     );

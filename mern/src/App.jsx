@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider";
-import { AuthLayout } from "./Layouts/";
+import { AuthLayout, RutaProtegida } from "./Layouts/";
+import Proyectos from "./Pages/dashboard/Proyectos";
 import {
     ConfirmarCuenta,
     LoginPage,
@@ -30,9 +31,9 @@ const App = () => {
                             element={<ConfirmarCuenta />}
                         />
                     </Route>
-                    <Route path="/proyecctos" element={}>
-                            <Route index element={<Proyectos/>} />
-                     </Route>
+                    <Route path="/proyectos" element={<RutaProtegida />}>
+                        <Route index element={<Proyectos />} />
+                    </Route>
                 </Routes>
             </AuthProvider>
         </BrowserRouter>
