@@ -1,4 +1,9 @@
-import { generateJWT, generateId, emailRegister } from "../helpers/index.js";
+import {
+    generateJWT,
+    generateId,
+    emailRegister,
+    resetPassword,
+} from "../helpers/index.js";
 import User from "../models/User.js";
 
 export const userRegisterController = async (req, res) => {
@@ -58,7 +63,7 @@ export const autenticarController = async (req, res) => {
 
 export const confirmarController = async (req, res) => {
     const token = req.params.token;
-    console.log("hola desde controller")
+    console.log("hola desde controller");
     const userConfirmar = await User.findOne({ token });
     console.log(userConfirmar);
     if (!userConfirmar) {
@@ -71,7 +76,7 @@ export const confirmarController = async (req, res) => {
         userConfirmar.save();
         res.json({ msj: `User confirmado de forma correcta` });
     } catch (error) {
-        console.log("error update ")
+        console.log("error update ");
         res.status(400).json({ error });
     }
 };
@@ -86,6 +91,12 @@ export const resertPasswordController = async (req, res) => {
     try {
         user.token = generateId();
         await user.save();
+        resetPassword({
+            email: user.email,
+            nombre: user.nombre,
+            token: user.token,
+        });
+
         res.json({ msj: "Se envio un correo a su email" });
     } catch (error) {
         console.log(error);
@@ -97,8 +108,9 @@ export const comprobarTokenController = async (req, res) => {
     const token = req.params.token;
     const validatetoken = await User.findOne({ token });
     if (!validatetoken) {
-        const error = new Error(`Token no valido`);
-        return res.status(404).json({ msj: error });
+        const error = new Error("Token no valido");
+        // console.log(error);
+        return res.status(404).json({ msj: "Token no valido" });
     }
 
     res.json({ msj: "Token valido y el usuario existe" });
