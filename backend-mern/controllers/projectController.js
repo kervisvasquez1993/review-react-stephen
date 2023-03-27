@@ -35,7 +35,7 @@ export const newProjectsController = async (req, res) => {
         const projectSave = await project.save();
         res.json(projectSave);
     } catch (error) {
-        console.error("error");
+        console.error(error, "error");
     }
 };
 export const editProjectsController = async (req, res) => {

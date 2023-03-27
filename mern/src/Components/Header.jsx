@@ -19,7 +19,7 @@ export const Header = () => {
                     </Link>
                     <button
                         type="button"
-                        className="text-white text-sm bg-sky-600 p-3 rounded-md uppercase font-bold"
+                        className="text-white text-sm bg-sky-600 p-3 rounded-md uppercase transition-colors font-bold"
                     >
                         Cerrar session{" "}
                     </button>
