@@ -1,5 +1,6 @@
 import { useEffect, useState, createContext } from "react";
 import { ApiBackend } from "../apis/ApiBackend";
+import { configHeaderToken } from "../helpers/";
 const ProyectoContext = createContext();
 
 export const ProyectoProvider = ({ children }) => {
@@ -21,19 +22,11 @@ export const ProyectoProvider = ({ children }) => {
             cliente: client,
         };
         try {
-            const token = localStorage.getItem("token");
-            if (!token) {
+            const config = configHeaderToken();
+            if (!config) {
                 mostrarAlerta({ message: "No tienes permiso", error: true });
-                console.log("No tienes permiso");
                 return;
             }
-            // TODO: Configurar esta configuracion en api response backend
-            const config = {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            };
 
             const { data } = await ApiBackend.post(
                 "/projects",
@@ -49,23 +42,14 @@ export const ProyectoProvider = ({ children }) => {
     useEffect(() => {
         const getProjetcs = async () => {
             try {
-                const token = localStorage.getItem("token");
-                if (!token) {
+                const config = configHeaderToken();
+                if (!config) {
                     mostrarAlerta({
                         message: "No tienes permiso",
                         error: true,
                     });
-                    console.log("No tienes permiso");
                     return;
                 }
-                // TODO: Configurar esta configuracion en api response backend
-                const config = {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                };
-
                 const { data } = await ApiBackend.get("/projects", config);
                 setProyectos(data.projects);
                 setLoadingProject(false);
@@ -80,6 +64,13 @@ export const ProyectoProvider = ({ children }) => {
     setTimeout(() => {
         setAlerta({});
     }, 5000);
+    const getProject = async (id) => {
+        try {
+            console.log(id, "id");
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <ProyectoContext.Provider
             value={{
@@ -88,6 +79,7 @@ export const ProyectoProvider = ({ children }) => {
                 mostrarAlerta,
                 alerta,
                 submitProyecto,
+                getProject,
             }}
         >
             {children}
