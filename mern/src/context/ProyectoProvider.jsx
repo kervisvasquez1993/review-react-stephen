@@ -40,7 +40,6 @@ export const ProyectoProvider = ({ children }) => {
                 dataSubmit,
                 config
             );
-            console.log(data, "data");
             mostrarAlerta({ message: "Proyecto Creado", error: false });
         } catch (error) {
             console.log(error);
