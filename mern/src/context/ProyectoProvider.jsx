@@ -5,6 +5,7 @@ const ProyectoContext = createContext();
 export const ProyectoProvider = ({ children }) => {
     const [proyectos, setProyectos] = useState([]);
     const [alerta, setAlerta] = useState({});
+    const [loadingProject, setLoadingProject] = useState(true);
     const mostrarAlerta = (alerta) => {
         setAlerta(alerta);
     };
@@ -41,11 +42,41 @@ export const ProyectoProvider = ({ children }) => {
             );
             console.log(data, "data");
             mostrarAlerta({ message: "Proyecto Creado", error: false });
-            
         } catch (error) {
             console.log(error);
         }
     };
+
+    useEffect(() => {
+        const getProjetcs = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    mostrarAlerta({
+                        message: "No tienes permiso",
+                        error: true,
+                    });
+                    console.log("No tienes permiso");
+                    return;
+                }
+                // TODO: Configurar esta configuracion en api response backend
+                const config = {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                };
+
+                const { data } = await ApiBackend.get("/projects", config);
+                setProyectos(data.projects);
+                setLoadingProject(false);
+            } catch (error) {
+                console.log(error);
+                setLoadingProject(false);
+            }
+        };
+        getProjetcs();
+    }, []);
 
     setTimeout(() => {
         setAlerta({});
@@ -54,7 +85,7 @@ export const ProyectoProvider = ({ children }) => {
         <ProyectoContext.Provider
             value={{
                 proyectos,
-                setProyectos,
+                loadingProject,
                 mostrarAlerta,
                 alerta,
                 submitProyecto,
