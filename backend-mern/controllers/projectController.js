@@ -22,6 +22,7 @@ export const getProjectController = async (req, res) => {
                 error: "no tiene permiso para acceder a este project",
             });
         }
+        // obtener las tareas del projecto
         return res.json(project);
     } catch (err) {
         res.status(404).json(err);

@@ -5,11 +5,13 @@ const ProyectoContext = createContext();
 
 export const ProyectoProvider = ({ children }) => {
     const [proyectos, setProyectos] = useState([]);
+    const [proyecto, setProyecto] = useState({});
     const [alerta, setAlerta] = useState({});
-    const [loadingProject, setLoadingProject] = useState(true);
+    const [loadingProject, setLoadingProject] = useState(false);
     const mostrarAlerta = (alerta) => {
         setAlerta(alerta);
     };
+    const config = configHeaderToken();
 
     const submitProyecto = async (proyecto) => {
         // console.log(proyecto);
@@ -22,7 +24,6 @@ export const ProyectoProvider = ({ children }) => {
             cliente: client,
         };
         try {
-            const config = configHeaderToken();
             if (!config) {
                 mostrarAlerta({ message: "No tienes permiso", error: true });
                 return;
@@ -41,8 +42,8 @@ export const ProyectoProvider = ({ children }) => {
 
     useEffect(() => {
         const getProjetcs = async () => {
+            setLoadingProject(true);
             try {
-                const config = configHeaderToken();
                 if (!config) {
                     mostrarAlerta({
                         message: "No tienes permiso",
@@ -55,6 +56,7 @@ export const ProyectoProvider = ({ children }) => {
                 setLoadingProject(false);
             } catch (error) {
                 console.log(error);
+            } finally {
                 setLoadingProject(false);
             }
         };
@@ -65,21 +67,33 @@ export const ProyectoProvider = ({ children }) => {
         setAlerta({});
     }, 5000);
     const getProject = async (id) => {
+        setLoadingProject(true);
         try {
-            console.log(id, "id");
+            if (!config) {
+                mostrarAlerta({ message: "No tienes permiso", error: true });
+                return;
+            }
+            const { data } = await ApiBackend.get(`/projects/${id}`, config);
+            // setProyecto(data.project);
+            setProyecto(data);
+            return;
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoadingProject(false);
         }
     };
     return (
         <ProyectoContext.Provider
             value={{
                 proyectos,
+                proyecto,
                 loadingProject,
                 mostrarAlerta,
                 alerta,
                 submitProyecto,
                 getProject,
+                loadingProject
             }}
         >
             {children}
