@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider, ProyectoProvider } from "./context/";
 import { AuthLayout, RutaProtegida } from "./Layouts/";
-import { NuevoProyecto, Proyectos } from "./Pages/dashboard/";
-import ShowProject from "./Pages/dashboard/ShowProject";
+import { NuevoProyecto, Proyectos, EditProject, ShowProject } from "./Pages/dashboard/";
+
 
 import {
     ConfirmarCuenta,
@@ -46,6 +46,10 @@ const App = () => {
                             <Route
                                 path=":id"
                                 element={<ShowProject />}
+                            />
+                            <Route
+                                path="edit/:id"
+                                element={<EditProject/>}
                             />
                         </Route>
                     </Routes>
