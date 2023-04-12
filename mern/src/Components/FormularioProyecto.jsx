@@ -1,13 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import useProyecto from "../hooks/useProyectos";
 import { Alert } from "../Views/Alert";
 
 export const FormularioProyecto = () => {
     const [nameProject, setNameProject] = useState("");
+    const [id, setId] = useState("");
     const [descriptionProject, setDescriptionProject] = useState("");
     const [dateEntregaProject, setDateEntregaProject] = useState("");
     const [client, setClient] = useState("");
-    const { mostrarAlerta, alerta, submitProyecto } = useProyecto();
+    const { mostrarAlerta, alerta, submitProyecto, proyecto } = useProyecto();
+
+    const params = useParams();
+    useEffect(() => {
+        if (params.id) {
+            setId(proyecto._id);
+            setNameProject(proyecto.nombre);
+            setDescriptionProject(proyecto.descripcion);
+            setDateEntregaProject(proyecto.fechaEntrega?.split("T")[0]);
+            setClient(proyecto.cliente);
+        }
+        // console.log(nameProject, "nombre");
+    }, [params]);
 
     // formulario
     const handleSubmit = async (e) => {
@@ -22,19 +36,25 @@ export const FormularioProyecto = () => {
         ) {
             // setAlerta({ message: "Campos Obligatorio", error: true });
             mostrarAlerta({ message: "Campos Obligatorio", error: true });
-            return 
+            return;
         }
-        //  pasar los datos al provider 
-        await submitProyecto({nameProject, descriptionProject, dateEntregaProject, client})
-
+        //  pasar los datos al provider
+        await submitProyecto({
+            id,
+            nameProject,
+            descriptionProject,
+            dateEntregaProject,
+            client,
+        });
+        setId(null);
         setNameProject("");
         setDescriptionProject("");
         setDateEntregaProject("");
         setClient("");
-        console.log("eviando datos");        
+        console.log("eviando datos");
     };
     const { message } = alerta;
-   
+
     return (
         <>
             <div>
@@ -113,7 +133,9 @@ export const FormularioProyecto = () => {
                     </div>
                     <input
                         type="submit"
-                        value={"Crear Proyecto"}
+                        value={
+                            proyecto._id ? "Editar Proyecto" : "Crear Proyecto"
+                        }
                         className={
                             "bg-sky-600 w-full p-2 uppercase text-white font-bold rounded cursor-pointer hover:bg-sky-700 "
                         }
