@@ -1,11 +1,11 @@
 import { useEffect, useState, createContext } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ApiBackend } from "../apis/ApiBackend";
 import { configHeaderToken } from "../helpers/";
 const ProyectoContext = createContext();
 
 export const ProyectoProvider = ({ children }) => {
-    // const navigate = Navigate;
+    const navigate = useNavigate();
     const [proyectos, setProyectos] = useState([]);
     const [proyecto, setProyecto] = useState({});
     const [alerta, setAlerta] = useState({});
@@ -48,7 +48,24 @@ export const ProyectoProvider = ({ children }) => {
         };
         getProjetcs();
     }, [proyecto]);
-
+    const deletedProject = async (id) => {
+        try {
+            if (!config) {
+                mostrarAlerta({ message: "No tienes permiso", error: true });
+                return;
+            }
+            await ApiBackend.delete(`/projects/${id}`, config);
+            const proyectosActualizados = proyectos.filter(
+                (proyectoState) => proyectoState._id !== id
+            );
+            setProyectos(proyectosActualizados);
+            mostrarAlerta({ message: "Proyecto Eliminado", error: false });
+            // <n to="/proyectos"/>;
+            navigate("/proyectos");
+        } catch (error) {
+            console.log(error);
+        }
+    };
     setTimeout(() => {
         setAlerta({});
     }, 5000);
@@ -137,6 +154,7 @@ export const ProyectoProvider = ({ children }) => {
                 submitProyecto,
                 getProject,
                 loadingProject,
+                deletedProject
             }}
         >
             {children}

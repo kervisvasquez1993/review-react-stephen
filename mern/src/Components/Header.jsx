@@ -15,7 +15,7 @@ export const Header = () => {
                 />
                 <div className="flex items-center gap-4">
                     <Link to="/proyectos" className="font-bold uppercase">
-                        Proyectos{" "}
+                        Proyectos
                     </Link>
                     <button
                         type="button"
