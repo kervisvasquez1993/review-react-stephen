@@ -101,7 +101,7 @@ export const ProyectoProvider = ({ children }) => {
             // sincronizar el state
             const proyectosActualizados = proyectos.map((proyectoState) => {
                 if (proyectoState._id === data._id) {
-                    setProyecto(data)
+                    setProyecto(data);
                     return data;
                 } else {
                     return proyectoState;
@@ -118,7 +118,7 @@ export const ProyectoProvider = ({ children }) => {
     const newProject = async (proyecto) => {
         console.log("creando proyecto");
         const dataSubmit = bodySubmit(proyecto);
-        console.log(dataSubmit, "dataSubmit desde formulario")
+        console.log(dataSubmit, "dataSubmit desde formulario");
         try {
             if (!config) {
                 mostrarAlerta({ message: "No tienes permiso", error: true });
@@ -148,6 +148,24 @@ export const ProyectoProvider = ({ children }) => {
             setLoadingProject(false);
         }
     };
+    // TAREAS :
+    const submitTarea = async (tarea) => {
+        try {
+            if (!config) {
+                mostrarAlerta({ message: "No tienes permiso", error: true });
+                return;
+            }
+            const { data } = await ApiBackend.post(
+                `task`,
+                tarea,
+                config
+            );
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <ProyectoContext.Provider
             value={{
@@ -162,6 +180,7 @@ export const ProyectoProvider = ({ children }) => {
                 deletedProject,
                 handleFormProyecto,
                 formModalProyecto,
+                submitTarea,
             }}
         >
             {children}

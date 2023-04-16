@@ -1,9 +1,48 @@
 import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { useParams } from "react-router-dom";
 import useProyecto from "../hooks/useProyectos";
-
+import { Alert } from "./Alert";
+const PRIORIDADES = ["Baja", "Media", "Alta"];
 export const Modal = () => {
-    const { formModalProyecto, handleFormProyecto } = useProyecto();
+    const {
+        formModalProyecto,
+        handleFormProyecto,
+        mostrarAlerta,
+        alerta,
+        submitTarea,
+    } = useProyecto();
+
+    const params = useParams();
+    const [nombre, setNombre] = useState("");
+    const [descripcion, setDescripcion] = useState("");
+    const [prioridad, setPrioridad] = useState("");
+    const [fechaEntrega, setFechaEntrega] = useState("");
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if ([nombre, descripcion, prioridad, fechaEntrega].includes("")) {
+            mostrarAlerta({
+                message: "Todos los campos son obligatorios",
+                error: true,
+            });
+            console.log(alerta);
+            return;
+        }
+        const tarea = {
+            nombre,
+            descripcion,
+            prioridad,
+            fechaEntrega,
+            proyecto: params.id,
+        };
+        submitTarea(tarea);
+        setNombre("");
+        setDescripcion("");
+        setPrioridad("");
+        setFechaEntrega("");
+    };
+    const { error } = alerta;
+
     return (
         <Transition.Root show={formModalProyecto} as={Fragment}>
             <Dialog
@@ -66,12 +105,119 @@ export const Modal = () => {
 
                             <div className="sm:flex sm:items-start">
                                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                    {error && <Alert type={alerta} />}
                                     <Dialog.Title
                                         as="h3"
                                         className="text-lg leading-6 font-bold text-gray-900"
                                     >
-                                        <h2 className="text-4xl">Titulo</h2>
+                                        Crear Tarea
                                     </Dialog.Title>
+                                    <form
+                                        onSubmit={handleSubmit}
+                                        className="my-10"
+                                    >
+                                        <div className="mb-5">
+                                            <label
+                                                className={
+                                                    "text-gray-700 uppercase font-bold text-sm"
+                                                }
+                                                htmlFor="nombre"
+                                            >
+                                                Nombre de Tarea
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="nombre"
+                                                placeholder="Nombre de la tarea"
+                                                className="border-2 w-full p-2 mt-2 placeholder-gray-400 text-gray-700 bg-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                                                value={nombre}
+                                                onChange={(e) =>
+                                                    setNombre(e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                        <div className="mb-5">
+                                            <label
+                                                className={
+                                                    "text-gray-700 uppercase font-bold text-sm"
+                                                }
+                                                htmlFor="fechaEntrega"
+                                            >
+                                                Nombre de Tarea
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="fechaEntrega"
+                                                className="border-2 w-full p-2 mt-2 placeholder-gray-400 text-gray-700 bg-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                                                value={fechaEntrega}
+                                                onChange={(e) =>
+                                                    setFechaEntrega(
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </div>
+                                        <div className="mb-5">
+                                            <label
+                                                className={
+                                                    "text-gray-700 uppercase font-bold text-sm"
+                                                }
+                                                htmlFor="descripcion"
+                                            >
+                                                Descripción de Tarea
+                                            </label>
+                                            <textarea
+                                                id="descripcion"
+                                                placeholder="Descripción de la tarea"
+                                                className="border-2 w-full p-2 mt-2 placeholder-gray-400 text-gray-700 bg-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                                                value={descripcion}
+                                                onChange={(e) =>
+                                                    setDescripcion(
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                            <div className="mb-5">
+                                                <label
+                                                    className={
+                                                        "text-gray-700 uppercase font-bold text-sm"
+                                                    }
+                                                    htmlFor="prioridad"
+                                                >
+                                                    Prioridad de la Tarea
+                                                </label>
+                                                <select
+                                                    type="text"
+                                                    id="nombre"
+                                                    placeholder="Nombre de la tarea"
+                                                    className="border-2 w-full p-2 mt-2 placeholder-gray-400 text-gray-700 bg-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                                                    value={prioridad}
+                                                    onChange={(e) =>
+                                                        setPrioridad(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                >
+                                                    <option value="">
+                                                        -- Seleccionar --
+                                                    </option>
+                                                    {PRIORIDADES.map(
+                                                        (option) => (
+                                                            <option
+                                                                key={option}
+                                                            >
+                                                                {option}
+                                                            </option>
+                                                        )
+                                                    )}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <input
+                                            type="submit"
+                                            className="bg-sky-600 text-sm hover:bg-sky-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded"
+                                        />
+                                    </form>
                                 </div>
                             </div>
                         </div>
