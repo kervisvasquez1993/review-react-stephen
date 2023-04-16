@@ -10,8 +10,12 @@ export const ProyectoProvider = ({ children }) => {
     const [proyecto, setProyecto] = useState({});
     const [alerta, setAlerta] = useState({});
     const [loadingProject, setLoadingProject] = useState(false);
+    const [formModalProyecto, setFormModalProyecto] = useState(false);
     const mostrarAlerta = (alerta) => {
         setAlerta(alerta);
+    };
+    const handleFormProyecto = () => {
+        return setFormModalProyecto(!formModalProyecto);
     };
     const config = configHeaderToken();
 
@@ -114,6 +118,7 @@ export const ProyectoProvider = ({ children }) => {
     const newProject = async (proyecto) => {
         console.log("creando proyecto");
         const dataSubmit = bodySubmit(proyecto);
+        console.log(dataSubmit, "dataSubmit desde formulario")
         try {
             if (!config) {
                 mostrarAlerta({ message: "No tienes permiso", error: true });
@@ -154,7 +159,9 @@ export const ProyectoProvider = ({ children }) => {
                 submitProyecto,
                 getProject,
                 loadingProject,
-                deletedProject
+                deletedProject,
+                handleFormProyecto,
+                formModalProyecto,
             }}
         >
             {children}
