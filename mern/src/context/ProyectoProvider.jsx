@@ -150,13 +150,14 @@ export const ProyectoProvider = ({ children }) => {
     };
     // TAREAS :
     const submitTarea = async (tarea) => {
+        console.log(tarea.proyecto);
         try {
             if (!config) {
                 mostrarAlerta({ message: "No tienes permiso", error: true });
                 return;
             }
             const { data } = await ApiBackend.post(
-                `task`,
+                "task",
                 tarea,
                 config
             );

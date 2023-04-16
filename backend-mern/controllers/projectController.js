@@ -2,7 +2,10 @@ import Project from "../models/Project.js";
 import Task from "../models/Task.js";
 export const getProjectsController = async (req, res) => {
     try {
-        const projects = await Project.find().where("creador").equals(req.user);
+        const projects = await Project.find()
+            .where("creador")
+            .equals(req.user)
+            .select("-tareas");
         return res.json({ projects });
     } catch (error) {
         console.error(error);
@@ -11,7 +14,7 @@ export const getProjectsController = async (req, res) => {
 export const getProjectController = async (req, res) => {
     const { id } = req.params;
     try {
-        const project = await Project.findById(id);
+        const project = await Project.findById(id).populate("tareas");
         if (!project) {
             const error = new Error("id no encontrado");
             return res.status(404).json({ error: error.message });

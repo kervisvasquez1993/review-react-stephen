@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import useProyecto from "../../hooks/useProyectos";
 import { Modal } from "../../Views";
+import { ListTareas } from "../../Components/";
 
 export const ShowProject = () => {
     const params = useParams();
@@ -17,6 +18,7 @@ export const ShowProject = () => {
         getProject(params.id);
     }, []);
     const { nombre, descripcion, fechaEntrega, cliente } = proyecto;
+    // console.log(proyecto)
     return (
         <div>
             {loadingProject ? (
@@ -70,6 +72,18 @@ export const ShowProject = () => {
                         </svg>
                         Nueva Tarea
                     </button>
+                    <p className="font-bold text-xl mt-10">
+                        Tareas del Proyecto
+                    </p>
+                    <div className="bg-white shadow mt-10 rounded-lg">
+                        {proyecto.tareas?.length === 0 ? (
+                            <p className="text-center my-5 p-10">
+                                No hay tarea en este proyecto
+                            </p>
+                        ) : (
+                            <ListTareas tareas={proyecto.tareas} />
+                        )}
+                    </div>
                     <Modal />
                 </>
             )}

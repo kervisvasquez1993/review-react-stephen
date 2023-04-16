@@ -3,6 +3,7 @@ import Task from "../models/Task.js";
 
 export const addTask = async (req, res) => {
     const { proyecto } = req.body;
+    console.log("hola desde tarea")
     try {
         const existProject = await Project.findById(proyecto);
         if (existProject.creador.toString() !== req.user._id.toString()) {
@@ -10,6 +11,9 @@ export const addTask = async (req, res) => {
             return res.status(403).send({ error: error.message });
         }
         const taskSave = await Task.create(req.body);
+        existProject.tareas.push(taskSave._id);
+        await existProject.save();
+        // console.log(existProject)
         res.status(200).json({ msj: taskSave });
     } catch (error) {
         res.status(404).json({ error: error.message });
