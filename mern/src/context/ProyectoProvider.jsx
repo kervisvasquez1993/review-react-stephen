@@ -161,7 +161,15 @@ export const ProyectoProvider = ({ children }) => {
                 tarea,
                 config
             );
-            console.log(data);
+            // console.log(data);
+            // console.log(proyecto, "proyecto");
+            // sincronizar el state
+            const proyectoActualizado = {...proyecto};
+            proyectoActualizado.tareas = [...proyecto.tareas, data.msj];
+            setProyecto(proyectoActualizado)
+            handleFormProyecto();
+
+
         } catch (error) {
             console.log(error);
         }

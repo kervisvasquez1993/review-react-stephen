@@ -1,15 +1,15 @@
 import React from "react";
+import {formDate} from '../../helpers/'
 
 export const Tarea = ({ tarea }) => {
-    console.log(tarea);
     const { descripcion, estado, fechaEntrega, nombre, prioridad } = tarea;
     return (
         <div className="border-b p-5 flex justify-between items-center">
             <div>
                 <p className="mb-2 text-xl">{nombre}</p>
                 <p className="mb-2 text-sm text-gray-500">{descripcion}</p>
-                <p className="mb-2 text-xl ">{fechaEntrega}</p>
-                <p className="mb-2 text-gray-600 mb-1">
+                <p className="mb-2 text-xl ">{formDate(fechaEntrega)}</p>
+                <p className="mb-2 text-gray-600">
                     Prioridad : {prioridad}
                 </p>
             </div>
