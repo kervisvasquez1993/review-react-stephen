@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { useDispatch } from "react-redux";
 import { addTask } from "../../features/tasks/taskSlice";
@@ -11,10 +12,12 @@ const TaskForm = () => {
     const handleInputChange = (e) => {
         setTasks({ ...task, [e.target.name]: e.target.value });
     };
+    const navigate = useNavigate();
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(addTask({ ...task, id: uuid() }));
         setTasks({name : "", description : ""});
+        navigate("/")
     };
     return (
         <form onSubmit={handleSubmit}>

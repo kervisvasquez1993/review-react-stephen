@@ -20,11 +20,20 @@ export const taskSlice = createSlice({
         addTask: (state, action) => {
             console.log(state, action);
             state.push(action.payload);
-            
+        },
+        deleteTask: (state, action) => {
+            //   state es para ver los datos que tengo actualmente y la action es para
+            //  el dato que le estoy pasando
+            console.log(action.payload, "desde la action");
+            console.log(action, "desde la action");
+            const taskForm = state.find((task) => task.id === action.payload);
+            if (taskForm){
+                state.splice(state.indexOf(taskForm), 1);
+            }
         },
     },
 });
 // Action creators are generated for each case reducer function
-export const { addTask } = taskSlice.actions
+export const { addTask, deleteTask } = taskSlice.actions;
 
 export default taskSlice.reducer;
